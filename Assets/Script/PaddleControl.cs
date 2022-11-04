@@ -9,6 +9,7 @@ public class PaddleControl : MonoBehaviour
     public KeyCode keyUp;
     public KeyCode keyDown;
     private Rigidbody2D rig;
+    public string paddle; //bagian mana, kanan atau kiri
     // private Vector2 speed; pindah ke bawah
 
     // Start is called before the first frame update
@@ -60,6 +61,7 @@ public class PaddleControl : MonoBehaviour
     {
         // transform.Translate(speed * Time.deltaTime); karena udah pakek rig
         rig.velocity = speed;
+        Debug.Log(paddle + " = " +rig.velocity.y); //tampilin speed paddle
     }
 
 
