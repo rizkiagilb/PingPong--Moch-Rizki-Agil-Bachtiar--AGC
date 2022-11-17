@@ -61,7 +61,7 @@ public class PaddleControl : MonoBehaviour
     {
         // transform.Translate(speed * Time.deltaTime); karena udah pakek rig
         rig.velocity = speed;
-        Debug.Log(paddle + " = " +rig.velocity.y); //tampilin speed paddle
+       /* Debug.Log(paddle + " = " +rig.velocity.y);*/ //tampilin speed paddle
     }
 
 
