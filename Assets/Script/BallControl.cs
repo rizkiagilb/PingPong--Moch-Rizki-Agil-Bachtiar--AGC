@@ -11,18 +11,29 @@ public class BallControl : MonoBehaviour
 
     private Rigidbody2D rig;
 
-    public bool isPU_active;
-    private float PU_fx_cooldown_current;
-    private float PU_fx_cooldown_max;
-
-
     public PU_SpeedUp pu_speedup;
+    public PU_SpeedDown pu_speeddown;
+
+    public PowerUpManager manager;
+
+    public int sisi; //di gunakan untuk mengetahui ball ini di pukul oleh siapa, tadinya mau pakai string...[1]
+                      //ibarakan saja kiri = 0, kanan = 1
+    public Collider2D col_paddle_L;
+    public Collider2D col_paddle_R;
+
+
+
+
+
+
 
     // Start is called before the first frame update
     private void Start()
     { 
         rig = GetComponent<Rigidbody2D>();
-        rig.velocity = speed; 
+        rig.velocity = speed;
+        sisi = Random.Range(0,1); //[1]... tapi kurang ngerti kalau mau bikin pick random string, misal choose("Kiri","Kanan")
+                                  //ibarakan saja kiri = 0, kanan = 1
 
     }
 
@@ -49,19 +60,8 @@ public class BallControl : MonoBehaviour
         //}
         //Debug.Log(isPU_active);
 
-        if (PU_fx_cooldown_max > 0)
-        {
-            PU_fx_cooldown_current += Time.deltaTime;
-            isPU_active = true;
-        }
-        if (PU_fx_cooldown_current >= PU_fx_cooldown_max && isPU_active == true)
-        {
-            PU_fx_cooldown_max = 0;
-            PU_fx_cooldown_current = PU_fx_cooldown_max;
-            isPU_active = false;
-            ResetFxPU();
-            Debug.Log("Stop");
-        }
+
+
     }
 
     
@@ -69,17 +69,23 @@ public class BallControl : MonoBehaviour
     public void resetBall()
     {
         transform.position = new Vector3(resetPos.x, resetPos.y, 2);
-        
+        sisi = Random.Range(0, 1);
     }
 
 
     //Reset All Fx PU
 
-    public void ResetFxPU()
+    public void res_spup() //reset speedup
     {
-        //speed up
-        rig.velocity /= pu_speedup.GetComponent<PU_SpeedUp>().magnitude;
+        Debug.Log("speedup Stop"); // knp reset speed up nya jadi gk work....? >:(   (kadang seperti kembali melambat tapi...) debug nya aja gk muncul
+        rig.velocity /= pu_speedup.magnitude; 
     }
+    public void res_spdn() //resset speeddown
+    {
+        Debug.Log("speeddown Stop");
+        rig.velocity *= pu_speeddown.magnitude;
+    }
+    
 
     //Activate PU
 
@@ -87,6 +93,44 @@ public class BallControl : MonoBehaviour
     public void ActivatePU_SpeedUp(float magnitude, float time)
     {
         rig.velocity *= magnitude;
-        PU_fx_cooldown_max = time;
-    } 
+        manager.setType("SpeedUP");
+        manager.setCdMax(time);
+    }
+
+    public void ActivatePU_SpeedDown(float magnitude, float time)
+    {
+        rig.velocity /= magnitude;
+        manager.setType("SpeedDown");
+        manager.setCdMax(time);
+    }
+
+
+
+    //di gunakan untuk mengetahui ball ini di pukul oleh siapa
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision == col_paddle_L) //kenapa nggk work
+        {
+            sisi = 0;
+            Debug.Log(sisi);
+        }
+        if (collision == col_paddle_R)
+        {
+            sisi = 1;
+            Debug.Log(sisi);
+
+        }
+    }//masalah di sini
+    // Masih belum bisa ngambil atau menentukan harus paddle mana yang kena effect
+
+
+
+
+
+
+
 }
+
+
+
+

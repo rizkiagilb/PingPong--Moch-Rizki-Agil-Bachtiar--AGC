@@ -16,6 +16,17 @@ public class PowerUpManager : MonoBehaviour
 
     private float timer;
 
+    public bool isPU_active;
+    private float PU_fx_cooldown_current;
+    private float PU_fx_cooldown_max;
+    private string typePU;
+
+    public BallControl ball;
+    public PaddleManager paddle;
+
+    
+
+
     private void Start()
     {
         powerUpList = new List<GameObject>();
@@ -30,6 +41,39 @@ public class PowerUpManager : MonoBehaviour
             GenerateRandomPowerUp();
             timer -= spawnInterval;
         }
+
+
+
+
+
+
+
+
+
+        if (PU_fx_cooldown_max > 0)
+        {
+            PU_fx_cooldown_current += Time.deltaTime;
+            isPU_active = true;
+        }
+        if (PU_fx_cooldown_current >= PU_fx_cooldown_max && isPU_active == true)
+        {
+            PU_fx_cooldown_max = 0;
+            PU_fx_cooldown_current = PU_fx_cooldown_max;
+            isPU_active = false;
+            ResetFxPU();
+            
+        }
+
+
+    }
+
+    public void setfxcdnull()
+    {
+        if (isPU_active == true)
+        {
+            PU_fx_cooldown_current = PU_fx_cooldown_max;
+        }
+        
     }
 
     public void GenerateRandomPowerUp()
@@ -71,4 +115,41 @@ public class PowerUpManager : MonoBehaviour
             RemovePowerUp(powerUpList[0]);
         }
     }
+
+
+    public void setType(string type)
+    {
+        typePU = type;
+    }
+
+    public void setCdMax(float max)
+    {
+        PU_fx_cooldown_max = max;
+    }
+
+    public void ResetFxPU()
+    {
+        if (typePU == "SpeedUP")
+        {
+            //speed up
+            Debug.Log("Reset Speedup masuk...");
+            ball.res_spup();
+        }
+        else if (typePU == "SpeedDown")
+        {
+            ball.res_spdn();
+        }
+        else if (typePU == "Expand")
+        {
+            paddle.res_expnd();
+        }
+        else if (typePU == "SpeedupPaddle")
+        {
+            paddle.res_spd_pdl();
+        }
+        typePU = "";
+    }
+
+
+
 }

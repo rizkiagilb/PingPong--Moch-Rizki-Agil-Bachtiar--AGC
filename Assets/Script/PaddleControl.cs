@@ -10,7 +10,14 @@ public class PaddleControl : MonoBehaviour
     public KeyCode keyDown;
     private Rigidbody2D rig;
     public string paddle; //bagian mana, kanan atau kiri
-    // private Vector2 speed; pindah ke bawah
+                          // private Vector2 speed; pindah ke bawah
+
+    public PowerUpManager manager;
+
+    public Collider2D ball;
+
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -63,6 +70,23 @@ public class PaddleControl : MonoBehaviour
         rig.velocity = speed;
        /* Debug.Log(paddle + " = " +rig.velocity.y);*/ //tampilin speed paddle
     }
+
+
+    // Masih belum bisa ngambil atau menentukan harus paddle mana yang kena effect
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision == ball && paddle == "Kiri")//kenapa nggk work
+        {
+            Debug.Log("Kiri");
+        }
+        if (collision == ball && paddle == "Kanan")
+        {
+            Debug.Log("kanan");
+        }
+    }//masalah di sini
+
+
+
 
 
 

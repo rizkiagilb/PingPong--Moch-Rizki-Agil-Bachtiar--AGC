@@ -8,6 +8,8 @@ public class GoalController : MonoBehaviour
     public bool isRight;
     public ScoreManager score;
 
+    public PowerUpManager pu_m;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision == ball)
@@ -20,6 +22,8 @@ public class GoalController : MonoBehaviour
             {
                 score.Add_rScore(1);
             }
+            pu_m.setfxcdnull();
+                
         }
     }
 }
